@@ -39,7 +39,7 @@ const getProducts = async (req = request, res = response) => {
 
 const createProduct = async (req = request, res = response) => {
   try {
-    let { name, status, ...body } = req.body
+    let { name, price } = req.body
 
     name = req.body.name.trim().toUpperCase()
     const productDB = await Product.findOne({ name })
@@ -51,7 +51,6 @@ const createProduct = async (req = request, res = response) => {
     }
 
     const data = {
-      ...body,
       name,
       createdAt: DateTime.now(),
       modifiedAt: DateTime.now(),
