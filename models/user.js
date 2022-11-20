@@ -1,9 +1,19 @@
+const { DateTime } = require('luxon')
 const { Schema, model } = require('mongoose')
 
 const UserSchema = Schema({
-  name: {
+  fullName: {
     type: String,
     required: [true, 'El nombre es obligatorio'],
+    enum: ['C.C','T.I', 'T.E'],
+  },
+  typeDocument: {
+    type: string,
+    required: [true, 'El tipo de documento es obligatorio'],
+  },
+  numberDocument: {
+    type: string,
+    required: [true, 'El número de documento es obligatorio']
   },
   email: {
     type: String,
@@ -15,6 +25,10 @@ const UserSchema = Schema({
     type: String,
     required: [true, 'La contraseña es obligatoria'],
   },
+  numberPhone :{
+    type: string,
+    required: [true, 'El numero de telefono es obligatorio'],
+  },
   img: {
     type: String,
   },
@@ -22,7 +36,7 @@ const UserSchema = Schema({
     type: String,
     required: [true, 'El rol es obligatorio'],
     default: 'USER_ROLE',
-    // enum: ['ADMIN_ROLE', 'USER_ROLE'],
+    enum: ['ADMIN_ROLE', 'CLIENT_ROLE','USER_ROLE'],
   },
   status: {
     type: Boolean,
@@ -32,11 +46,23 @@ const UserSchema = Schema({
     type: Boolean,
     default: false,
   },
+  createdAt: {
+    type: Date,
+    required: true,
+  },
+  uptedAt:{
+    type: Date,
+  }
 })
 
 UserSchema.methods.toJSON = function () {
   const { __v, password, _id, ...user } = this.toObject()
   user.id = _id
+
+  user.createdAt = DateTime.fromISO(createdAt.toISOString())
+  user.uptedAt = DateTime.fromJSDate(uptedAt, {
+    zone: 'America/Bogota'
+  })
   return user
 }
 
