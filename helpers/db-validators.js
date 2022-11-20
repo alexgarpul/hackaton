@@ -1,4 +1,5 @@
 const { Category, Role, User, Product } = require('../models')
+const service = require('../models/service')
 
 /**
  * Validación contra la BD de usuarios
@@ -58,6 +59,19 @@ const allowedCollections = (collection = '', collections = []) => {
   return true
 }
 
+/**
+ *  Validar contra la BD de servicios
+ */
+
+ const serviceByIdExists = async (id = '') => {
+  const serviceExists = await service.findById(id)
+  if (!serviceExists) {
+    throw new Error(`Producto con id '${id}' no existe en la base de datos`)
+  }
+}
+
+
+
 module.exports = {
   isValidRole,
   emailExists,
@@ -65,4 +79,5 @@ module.exports = {
   categoryByIdExists,
   productByIdExists,
   allowedCollections,
+  serviceByIdExists,
 }

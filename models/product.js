@@ -7,6 +7,10 @@ const ProductSchema = Schema({
     unique: true,
     required: [true, 'El nombre es obligatorio'],
   },
+  description:{
+    type: String,
+    required: [true, 'La descripción es requerida']
+},
   price: {
     type: Number,
     default: 0,
@@ -30,18 +34,14 @@ const ProductSchema = Schema({
 })
 
 ProductSchema.methods.toJSON = function () {
-  const { __v, _id, status, createdAt, modifiedAt, ...product } =
+  const { __v, _id, status, createdAt, updtedAt, ...product } =
     this.toObject()
   product.id = _id
 
   product.createdAt = DateTime.fromISO(createdAt.toISOString())
-  product.updtedAt = DateTime.fromJSDate(modifiedAt, {
+  product.updtedAt = DateTime.fromJSDate(updtedAt, {
     zone: 'America/Bogota',
   })
-
-  const { _id: _uId, password, __v: __uV, ...user } = product.user
-  user.id = _uId
-  product.user = user
 
   return product
 }

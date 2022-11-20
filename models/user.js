@@ -5,14 +5,15 @@ const UserSchema = Schema({
   fullName: {
     type: String,
     required: [true, 'El nombre es obligatorio'],
-    enum: ['C.C','T.I', 'T.E'],
+    
   },
   typeDocument: {
-    type: string,
+    type: String,
     required: [true, 'El tipo de documento es obligatorio'],
+    enum: ['C.C','T.I', 'T.E'],
   },
   numberDocument: {
-    type: string,
+    type: String,
     required: [true, 'El número de documento es obligatorio']
   },
   email: {
@@ -26,7 +27,7 @@ const UserSchema = Schema({
     required: [true, 'La contraseña es obligatoria'],
   },
   numberPhone :{
-    type: string,
+    type: String,
     required: [true, 'El numero de telefono es obligatorio'],
   },
   img: {
