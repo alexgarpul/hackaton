@@ -37,22 +37,6 @@ const getProducts = async (req = request, res = response) => {
   }
 }
 
-const getProductById = async (req = request, res = response) => {
-  try {
-    const { id } = req.params
-    const product = await Product.findById(id)
-
-    res.status(200).json({
-      product,
-    })
-  } catch (error) {
-    console.log(error)
-    res.status(500).json({
-      msg: 'Error en el servidor',
-    })
-  }
-}
-
 const createProduct = async (req = request, res = response) => {
   try {
     let { name, status, ...body } = req.body
@@ -88,67 +72,7 @@ const createProduct = async (req = request, res = response) => {
   }
 }
 
-const updateProduct = async (req = request, res = response) => {
-  try {
-    const { id } = req.params
-    const { status, createdAt, ...body } = req.body
-    const name = req.body.name.trim().toUpperCase()
-
-    const productDB = await Product.findOne({ name })
-    if (productDB) {
-      return res.status(400).json({
-        msg: `El producto ${productDB.name} ya existe`,
-      })
-    }
-
-    const data = {
-      ...body,
-      name,
-      updatedAt: DateTime.now(),
-    }
-
-    const product = await Product.findByIdAndUpdate(id, data, { new: true })
-
-    res.status(200).json({
-      product,
-    })
-  } catch (error) {
-    console.log(error)
-    res.status(500).json({
-      msg: 'Error en el servidor',
-    })
-  }
-}
-
-const deleteProdut = async (req = request, res = response) => {
-  try {
-    const { id } = req.params
-
-    const deletedProduct = await Product.findByIdAndUpdate(
-      id,
-      {
-        status: false,
-      },
-      {
-        new: true,
-      }
-    )
-
-    res.status(200).json({
-      deletedProduct,
-    })
-  } catch (error) {
-    console.log(error)
-    return res.status(500).json({
-      msg: 'Error en el servidor',
-    })
-  }
-}
-
 module.exports = {
   getProducts,
-  getProductById,
   createProduct,
-  updateProduct,
-  deleteProdut,
 }

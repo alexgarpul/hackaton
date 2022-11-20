@@ -28,8 +28,8 @@ const getUsers = async (req = request, res = response) => {
 }
 
 const createUser = async (req = request, res = response) => {
-  const { name, email, password, role } = req.body
-  const user = new User({ name, email, password, role })
+  const { fullName, typeDocument, numberDocument, email, password, numberPhone, role } = req.body
+  const user = new User({ fullName, typeDocument, numberDocument, email, password, numberPhone, role})
 
   user.password = bcryptjs.hashSync(password, bcryptjs.genSaltSync())
   await user.save()
@@ -39,27 +39,5 @@ const createUser = async (req = request, res = response) => {
   })
 }
 
-const updateUser = async (req = request, res = response) => {
-  const { id } = req.params
-  const { _id, password, google, ...remainder } = req.body
-
-  if (password) {
-    remainder.password = bcryptjs.hashSync(password, bcryptjs.genSaltSync())
-  }
-  const user = await User.findByIdAndUpdate(id, remainder, { new: true })
-
-  res.status(200).json({
-    user,
-  })
+module.exports = { getUsers, createUser,
 }
-
-const deleteUser = async (req = request, res = reponse) => {
-  const { id } = req.params
-
-  const deletedUser = await User.findByIdAndUpdate(id, { status: false })
-  res.json({
-    deletedUser,
-  })
-}
-
-module.exports = { getUsers, createUser, updateUser, deleteUser }

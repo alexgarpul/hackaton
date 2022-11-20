@@ -6,8 +6,6 @@ const { isValidRole, emailExists, userByIdExists } = require('../helpers')
 const {
   getUsers,
   createUser,
-  updateUser,
-  deleteUser,
 } = require('../controllers')
 
 const router = Router()
@@ -18,7 +16,11 @@ router.post(
   '/',
   [
     check('name', 'El nombre es obligatorio').not().isEmpty(),
-    check('password', 'El passsword es obligatorio').not().isEmpty(),
+    check('typedocument', 'el tipo de documennto es requerido').not().isEmpty(),
+    check('numberDocument' , 'el numero de documento es requerido').not().isEmpty(),
+    check('numberDocument' , 'el numero de documento no es valido').isLength(11),
+    check('numberPhone', 'El numero de telefono es requerido').not(),
+    check('password', 'El passsword es obligatorio').not().isEmpty().isEmpty(),
     check('password', 'El passsword debe ser de 6 letras o más').isLength({
       min: 6,
     }),
@@ -32,28 +34,5 @@ router.post(
   createUser
 )
 
-router.put(
-  '/:id',
-  [
-    check('id', `El ID no es válido`).isMongoId(),
-    check('id').custom(userByIdExists),
-    check('role').custom(isValidRole),
-    validateFields,
-  ],
-  updateUser
-)
-
-router.delete(
-  '/:id',
-  [
-    validateJWT,
-    // isAdminRole,
-    isRole('USER_ROLE', 'ADMIN_ROLE'),
-    check('id', `El ID no es válido`).isMongoId(),
-    check('id').custom(userByIdExists),
-    validateFields,
-  ],
-  deleteUser
-)
 
 module.exports = router
